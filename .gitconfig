@@ -1,0 +1,45 @@
+[core]
+name         = "David Zhuo"
+
+[log]
+date         = format:%a %b %d %I:%M %Y
+decorate     = short
+
+[blame]
+date         = format:%b %d %Y
+
+[show]
+date         = format:%a %b %d %I:%M %Y
+
+[color]
+ui           = auto
+
+[alias]
+slog         = log --pretty=format:'%C(reset)%C(yellow)%h %C(blue)%ad %<(16,mtrunc)%C(green)%aN %<(1)%C(dim white)%s %C(red)%+d'
+elog         = log --pretty=format:'%Cblue%<(16)%ad %Cgreen%<(16,mtrunc)%aN %C(white dim)%s %+d' --date=format:'%a %b %d %I:%M'
+csvlog       = !"echo Hash,Date,Author,Message && git log --pretty=format:'%h,%ad,%aN,%s'"
+root         = rev-parse --show-toplevel
+cp           = !"f() { git cherry-pick -Xignore-all-space $@ && echo \"\\033[33m- - - Remember to push - - -\"; }; f $@"
+st           = status
+statsu       = status
+br           = branch
+brnach       = branch
+co           = checkout
+chekcout     = checkout
+checkotu     = checkout
+remotepull   = !"git fetch origin $1:$1"
+rpull        = !"git fetch origin $1:$1"
+sohw         = show
+squash-merge = merge --squash --ff-only --log --edit
+
+[user]
+name         = "David Zhuo"
+
+[push]
+default      = simple
+
+[pull]
+ff           = true
+
+[include]
+path         = ~/work/gitconfig

@@ -1,0 +1,115 @@
+#!/bin/zsh
+
+# Allow dumb terms to work (emacs tramp)
+if [[ "$TERM" == "dumb" ]]; then
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    unfunction precmd
+    unfunction preexec
+    PS1='$ '
+    return
+fi
+
+# sudo with aliases
+alias sudo='sudo '
+
+# Colors
+#export PS1='\[\e[0;33m\]\u\[\e[m\] \[\e[0;34m\]\w\[\e[m\] $ '
+alias grep='grep --color '
+if [[ `uname` == 'Darwin' ]]; then
+    export LSCOLORS=exfxcxdxbxexexabagacad
+    export CLICOLOR=1
+    alias ls='ls -pF '
+else
+    alias ls='ls --color=auto '
+    export TERM=xterm-256color
+fi
+export LESS=RinS
+man() {
+    env \
+    LESS_TERMCAP_mb="$(printf "\e[1;31m")" \
+    LESS_TERMCAP_md="$(printf "\e[1;31m")" \
+    LESS_TERMCAP_me="$(printf "\e[0m")" \
+    LESS_TERMCAP_se="$(printf "\e[0m")" \
+    LESS_TERMCAP_so="$(printf "\e[1;44;33m")" \
+    LESS_TERMCAP_ue="$(printf "\e[0m")" \
+    LESS_TERMCAP_us="$(printf "\e[1;32m")" \
+    man "${@}"
+}
+
+# Additional sourcing
+source $HOME/.shell/functions
+
+if [[ -e $HOME/work/src ]]; then
+    source $HOME/work/src
+fi
+
+if [[ `uname` == 'Darwin' ]]; then
+    export PATH=$PATH:$HOME/bin/mac_bin
+    source $HOME/.shell/itermsupport.zsh-theme
+else
+    export PATH=$PATH:$HOME/bin/linux_bin
+fi
+
+# Default programs
+export PAGER=less
+export EDITOR='emacs -nw'
+export VISUAL='emacs -nw'
+
+# Environment
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# Paths
+# export DYLD_LIBRARY_PATH=$HOME/opencv/lib:$DYLD_LIBRARY_PATH
+# export PYTHONPATH=/usr/local/lib/python2.7/site-packages/:$PYTHONPATH:/.
+export PYTHONSTARTUP=$HOME/.pythonrc
+export GOPATH=$HOME/Go
+export PATH=$PATH:/usr/local/sbin:$HOME/work:$HOME/bin:$GOPATH/bin
+
+# Locale
+# export LC_ALL="en_US.UTF-8"
+
+# Zsh autocomplete: find autocompletes, don't insert tab, mix hyphen and underscores. Don't autocomplete usernames
+export FPATH=/usr/local/share/zsh-completions:/usr/local/share/zsh/functions:$FPATH
+zstyle ':completion:*' insert-tab false
+zstyle ':completion:*' matcher-list '' 'm:{-_}={_-}'
+zstyle ':completion:*' users
+setopt complete_aliases
+compdef autossh=ssh
+compdef ash=ssh
+compdef rsync=scp
+compdef hdiutil=cat # give this a dead-simple autocomplete
+
+# Source named directories
+source $HOME/.shell/named_directories
+
+# Zsh history
+HISTFILE=$HOME/.zsh_history
+#HISTIGNORE="ls":"exit":"bg":"fg":"jobs":"history":"l"  # bash
+HISTORY_IGNORE='(ls|exit|bg|fg|jobs|history.*less|l|pwd|cd .*|* --help) *' # zsh
+HISTSIZE=1000000
+SAVEHIST=1000000
+setopt BANG_HIST
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_VERIFY
+setopt HIST_FCNTL_LOCK
+
+# Zsh keybindings - Don't insert garbage to terminal!
+bindkey "^[[1;2C" forward-word
+bindkey "^[[1;2D" backward-word
+bindkey "^[[1;4C" forward-word
+bindkey "^[[1;4D" backward-word
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;6C" forward-word
+bindkey "^[[1;6D" backward-word
+bindkey "^[[1;9C" forward-word
+bindkey "^[[1;9D" backward-word
+bindkey "^[[1;10C" forward-word
+bindkey "^[[1;10D" backward-word

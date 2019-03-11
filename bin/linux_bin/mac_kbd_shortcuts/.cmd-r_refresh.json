@@ -1,0 +1,30 @@
+{
+    "usageCount": 0, 
+    "omitTrigger": false, 
+    "prompt": false, 
+    "description": "cmd-r_refresh", 
+    "abbreviation": {
+        "wordChars": "[\\w]", 
+        "abbreviations": [], 
+        "immediate": false, 
+        "ignoreCase": false, 
+        "backspace": true, 
+        "triggerInside": false
+    }, 
+    "hotkey": {
+        "hotKey": "r", 
+        "modifiers": [
+            "<super>"
+        ]
+    }, 
+    "modes": [
+        3
+    ], 
+    "showInTrayMenu": false, 
+    "filter": {
+        "regex": ".*Chrome|.*Chromium|.*Firefox", 
+        "isRecursive": false
+    }, 
+    "type": "script", 
+    "store": {}
+}

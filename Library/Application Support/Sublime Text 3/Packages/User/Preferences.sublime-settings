@@ -1,0 +1,82 @@
+{
+	"__color_scheme": "Packages/Material Theme/schemes/Material-Theme-Darker.tmTheme",
+	"__itg_scrollbar_small": true,
+	"__itg_small_tabs": true,
+	"__material_theme_compact_panel": true,
+	"__material_theme_compact_sidebar": true,
+	"__material_theme_disable_folder_animation": true,
+	"__material_theme_small_statusbar": true,
+	"__material_theme_small_tab": true,
+	"__material_theme_tabs_autowidth": true,
+	"__theme": "Material-Theme-Darker.sublime-theme",
+	"animation_enabled": true,
+	"auto_complete": false,
+	"auto_complete_commit_on_tab": true,
+	"auto_complete_cycle": true,
+	"auto_complete_delay": 5,
+	"bold_folder_labels": true,
+	"color_scheme": "Packages/Boxy Theme/schemes/Boxy Tomorrow.tmTheme",
+	"create_new_pane_if_necessary": false,
+	"create_window_at_startup": false,
+	"drag_text": false,
+	"enable_telemetry": false,
+	"ensure_newline_at_eof_on_save": true,
+	"extra_tag_paths":
+	[
+		".tags",
+		".tags_sorted_by_file",
+		"TAGS",
+		"tags"
+	],
+	"fade_fold_buttons": true,
+	"fold_buttons": true,
+	"font_face": "Roboto Mono Light",
+	"font_options":
+	[
+		"subpixel_antialias"
+	],
+	"font_size": 12,
+	"highlight_modified_tabs": true,
+	"hot_exit": false,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"indent_guide_options":
+	[
+		"draw_normal"
+	],
+	"line_padding_bottom": 1,
+	"margin": -9,
+	"origami_auto_close_empty_panes": true,
+	"scroll_past_end": true,
+	"show_encoding": true,
+	"show_line_endings": true,
+	"show_navigation_bar": false,
+	"show_tab_close_buttons": false,
+	"tab_completion": false,
+	"theme": "Boxy Tomorrow.sublime-theme",
+	"theme_accent_lime": true,
+	"theme_find_panel_atomized": true,
+	"theme_find_panel_close_hidden": true,
+	"theme_find_panel_font_xl": true,
+	"theme_find_panel_padding_xs": true,
+	"theme_icons_materialized": true,
+	"theme_scrollbar_colored": true,
+	"theme_scrollbar_line": true,
+	"theme_scrollbar_rounded": true,
+	"theme_sidebar_indent_md": true,
+	"theme_sidebar_indent_top_level_disabled": true,
+	"theme_size_sm": true,
+	"theme_statusbar_colored": false,
+	"theme_statusbar_size_xs": true,
+	"theme_tab_arrows_hidden": true,
+	"theme_tab_selected_filled": true,
+	"theme_tab_size_md": true,
+	"theme_tab_width_auto": true,
+	"theme_unified": true,
+	"translate_tabs_to_spaces": false,
+	"trim_trailing_white_space_on_save": false,
+	"update_check": false,
+	"word_separators": "./\\()\"'-:,.;<>~!@#$%^&*|+=[]{}`~?"
+}

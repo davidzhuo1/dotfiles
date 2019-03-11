@@ -1,0 +1,4 @@
+#!/bin/bash
+
+disp=$(ddcctl -h 2>&1 | head -n 3 | tail -n 1 | cut -d ' ' -f 6)
+ddcctl -d $disp -b "?" -b $1+

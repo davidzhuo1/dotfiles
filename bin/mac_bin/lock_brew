@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# chown `whoami`:admin /usr/local/Caskroom/
+
+[ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@"
+
+if [[ "$1" == "-u" ]]; then
+    PERM=1777
+    STICKY='+t'
+else
+    PERM=755
+    STICKY='-t'
+fi
+
+chmod $PERM /usr/local/Cellar
+chmod $PERM /usr/local/Frameworks
+chmod $PERM /usr/local/bin
+chmod $PERM /usr/local/etc
+chmod $PERM /usr/local/include
+chmod $PERM /usr/local/lib
+chmod $PERM /usr/local/sbin
+chmod $PERM /usr/local/share
+chmod $PERM /usr/local/share/doc
+chmod $PERM /usr/local/share/doc/pcre
+chmod $PERM /usr/local/share/doc/pcre/*
+chmod $PERM /usr/local/share/locale
+chmod $PERM /usr/local/share/locale/hu/
+chmod $PERM /usr/local/share/locale/hu/LC_MESSAGES
+chmod $PERM /usr/local/share/man
+chmod $PERM /usr/local/share/man/man*
+chmod $PERM /usr/local/var
+
+chmod $STICKY /private/tmp

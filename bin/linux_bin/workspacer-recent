@@ -1,0 +1,14 @@
+#!/bin/bash
+# Workspaces are listed from 0 -> 3, not 1 -> 4. 0 is used as most-recent switch.
+
+CURR_DESKTOP_WORKSPACER=`xdotool get_desktop`
+
+if [ $1 -eq `expr $CURR_DESKTOP_WORKSPACER + 1` ]; then
+    sleep 0
+elif [ $1 -eq 0 ]; then
+    xdotool set_desktop `< ~/.config/tempxdotool/last_desktop`
+    echo $CURR_DESKTOP_WORKSPACER > ~/.config/tempxdotool/last_desktop
+else
+    echo $CURR_DESKTOP_WORKSPACER > ~/.config/tempxdotool/last_desktop
+    xdotool set_desktop `expr $1 - 1`
+fi

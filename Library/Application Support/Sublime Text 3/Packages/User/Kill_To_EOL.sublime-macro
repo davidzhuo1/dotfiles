@@ -1,0 +1,4 @@
+[
+	{ "command": "move_to", "args": { "extend": true, "to": "eol" }},
+	{ "command": "cut" }
+]

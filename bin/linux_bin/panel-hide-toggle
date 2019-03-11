@@ -1,0 +1,13 @@
+#!/bin/bash
+
+state1=$(gsettings get org.cinnamon panel-autohide)
+state2=$(gsettings get org.cinnamon panel2-autohide)
+if [ $state1 = "true" ]; then
+    gsettings set org.cinnamon panel-autohide false  #top panel
+    gsettings set org.cinnamon panel2-autohide $state2
+    xdotool key Escape
+else
+    gsettings set org.cinnamon panel-autohide true
+    gsettings set org.cinnamon panel2-autohide $state2
+    xdotool key super+Escape
+fi

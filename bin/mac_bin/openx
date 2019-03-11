@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+XCODE_PATH=$(dirname $(dirname $(xcode-select -p)))
+echo -e "\e[33m-- $(basename $XCODE_PATH) --"
+
+if [ -z "$1" ]; then
+    DIR=$(basename `pwd`)
+    if [ -d $DIR.xcodeproj ]; then
+        open -F -a $XCODE_PATH $DIR.xcodeproj
+    else
+        find . -name '*.xcodeproj' -maxdepth 1 | head -n 1 | xargs open -F -a $XCODE_PATH
+    fi
+else
+     DIR=$(basename $1)
+     if [ -d $1/$DIR.xcodeproj ]; then
+         open -F -a $XCODE_PATH $1/$DIR.xcodeproj
+     else
+         find $1 -name '*.xcodeproj' -maxdepth 1 | head -n 1 | xargs open -F -a $XCODE_PATH
+     fi
+fi

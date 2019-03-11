@@ -1,0 +1,12 @@
+#!/bin/bash
+
+sleepState=$(NoSleepCtrl -g)
+# 0 - let sleep
+# 1 - keep awake
+if [ $sleepState == "currentMode:0" ]; then
+    echo "Toggling NoSleepCtrl - Mode: Keep awake"
+    NoSleepCtrl -s 1
+else
+    echo "Toggling NoSleepCtrl - Mode: Let sleep"
+    NoSleepCtrl -s 0
+fi

@@ -1,0 +1,25 @@
+# Blacklist everything and enforce a whitelist
+*
+
+# Scripts
+!bin/
+!bin/*
+!bin/**
+!.shell
+bin/work_bin
+bin/virt*
+
+# Emacs
+.emacs.d/ac-comphist.dat
+.emacs.d/elpa/*
+tramp
+.elc
+.emacs.d/emacs-custom.el
+
+# Shallow repo clone
+bin/mirror_repo/clone
+
+# Wireshark
+~/.config/wireshark/*
+
+**/.DS_Store

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir mp3s
+for f in *.wav; do
+    avconv -i "$f" mp3s/"${f%.wav}".mp3 
+done

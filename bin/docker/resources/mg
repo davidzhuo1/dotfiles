@@ -1,0 +1,17 @@
+# .mg
+
+global-set-key "\^l" goto-line
+global-unset-key "\^z"
+global-set-key "\^[[1;5C" forward-word
+global-set-key "\^[[1;5D" backward-word
+make-backup-files false
+
+# Unset unused shortcuts
+global-unset-key "\^[[1;6C"
+global-unset-key "\^[[1;6D"
+global-unset-key "\^[[1;2C"
+global-unset-key "\^[[1;2D"
+global-unset-key "\^[[1;2C"
+global-unset-key "\^[[1;2D"
+global-unset-key "\^[[1;10C"
+global-unset-key "\^[[1;10D"

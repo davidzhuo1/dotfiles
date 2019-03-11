@@ -1,0 +1,3 @@
+#!/bin/bash
+
+upower -d | grep percentage | awk '{print $2}' | head -1

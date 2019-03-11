@@ -1,0 +1,4 @@
+#!/bin/bash
+
+disp=1
+ddcctl -d $disp -b "?" -b $1+

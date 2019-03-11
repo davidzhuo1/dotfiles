@@ -1,0 +1,4 @@
+[
+	{ "command": "toggle_tabs" },
+	{ "command": "toggle_side_bar" }
+]

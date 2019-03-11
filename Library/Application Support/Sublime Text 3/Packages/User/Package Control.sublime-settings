@@ -1,0 +1,19 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"A File Icon",
+		"All Autocomplete",
+		"ANSIescape",
+		"Boxy Theme",
+		"CTags",
+		"GitGutter",
+		"Material Theme",
+		"Origami",
+		"Package Control",
+		"Theme - itg.flat"
+	]
+}

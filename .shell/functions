@@ -1,0 +1,277 @@
+#!/bin/zsh
+
+# Typos
+alias sl='ls '
+alias gti='git '
+alias oepnx='openx '
+alias oepn='open '
+alias grpe='grep '
+
+#
+# Window Manipulation
+#
+raise-window () {
+    osascript -e 'tell application "System Events"' -e 'set frontmost of every process whose unix id is 468 to true' -e 'end tell'
+}
+
+#
+# Emacs
+#
+alias profile_emacs='emacs -Q -l ~/.emacs.d/profile-dotemacs.el -f profile-dotemacs'
+
+em() {
+    # Emacs, but take +page num argument after the file
+    if [[ ${2:0:1} == "+" ]]; then
+        local FILE=$1
+        shift
+        ec $@ $FILE
+    else
+        ec $@
+    fi
+}
+
+ev() {
+    # Read-only emacs
+    local EVCONFIG="$HOME/.emacs.d/init-view.elc"
+    if [ ! -f $EVCONFIG ]; then
+        EVCONFIG="$HOME/.emacs.d/init-view.el"
+    fi
+
+    if [[ ${2:0:1} == "+" ]]; then
+        local FILE=$1
+        shift
+        emacs -nw -q -l "$EVCONFIG" $@ $FILE
+    else
+        emacs -nw -q -l "$EVCONFIG" $@
+    fi
+}
+alias view='ev '
+
+ec() {
+    # Emacsclient wrapper
+
+    if [[ $# -eq 1 ]]; then
+        FILE="$1"
+        NUMBER=""
+    elif [[ $# -eq 2 ]]; then
+        FILE="$2"
+        NUMBER=$1
+    else
+        echo "Fix your code, bro"
+        return
+    fi
+
+    ps aux | grep -i 'emacs' | grep 'daemon' > /dev/null
+    local NOT_RUNNING=$?
+    if [ $NOT_RUNNING -ne 0 ]; then
+        emacs --daemon
+    fi
+
+    if [ -z $SSH_CONNECTION ]; then
+        local LIST_OF_FRAMES=$(emacsclient -e "(visible-frames-list)" | sed -E -e 's/#<frame ([^ ]*) [0-9a-fx]*>/"\1"/g' | tr -d '()')
+        if [[ ${LIST_OF_FRAMES} == "nil" ]]; then
+            emacsclient -c $@ > /dev/null 2>&1 &!
+            return
+        fi
+        local LIST_OF_FILES=$(emacsclient -e "(get-filenames-for-buffers (list $LIST_OF_FRAMES))" | tr -d '()"' | tr ' ' '\n')
+        local OPEN_FILE=$(echo ${LIST_OF_FILES} | ag "${FILE}")
+        if [[ -z $OPEN_FILE ]]; then
+            emacsclient -c $@ > /dev/null 2>&1 &!
+            return
+        fi
+        local FRAME_NAME=$(emacsclient -e "(get-file-buffer \"${OPEN_FILE}\")" | sed -E -e 's/.*buffer ([^>]+)>$/\1/g')
+        if [[ -z $NUMBER ]]; then
+            emacsclient -e "(progn (select-frame-by-name \"${FRAME_NAME}\") \
+                                   (set-buffer \"${FRAME_NAME}\"))" > /dev/null 2>&1 &!
+        else
+            emacsclient -e "(progn (select-frame-by-name \"${FRAME_NAME}\") \
+                                   (set-buffer \"${FRAME_NAME}\")
+                                   (goto-line ${NUMBER}))" > /dev/null 2>&1 &!
+        fi
+
+        # WA
+        local FRAME_SELECT_FAILED=$?
+        if [[ $FRAME_SELECT_FAILED -ne 0 ]]; then
+            emacsclient -c $@ > /dev/null 2>&1 &!
+        fi
+    else
+        emacsclient -nw $@
+    fi
+}
+
+#
+# fzf
+#
+fzfz () {
+    # Augmented fzf, should not be
+    local FZF_OPTS=${FZF_OPTS}' --no-mouse --bind "ctrl-k:kill-line" --select-1 --exit-0'
+
+    local NUM_LINES=`tput lines`
+    local NUM_COLS=`tput cols`
+    if [[ $(($NUM_LINES*2.5)) -gt $NUM_COLS ]]; then
+        FZF_OPTS=${FZF_OPTS}" --preview-window=up:40%"
+    else
+        if [[ $NUM_COLS -lt 150 ]]; then
+            FZF_OPTS=${FZF_OPTS}" --preview-window=right:60%"
+        else
+            FZF_OPTS=${FZF_OPTS}" --preview-window=right:100"
+        fi
+    fi
+
+    if [[ -z $1 ]]; then
+        FZF_DEFAULT_OPTS=${FZF_OPTS} fzf
+    else
+        if [[ $1 == "-q" ]]; then
+            shift
+        fi
+        FZF_DEFAULT_OPTS=${FZF_OPTS} fzf -q "$*"
+    fi
+}
+
+ff () {
+    local FZF_OPTS=' --preview="file -b {} && echo {} && ccat --color=always {} | head -120"'
+    local RESULT=$(fzfz "$*")
+    if [[ -n ${RESULT} ]]; then
+        abspath ${RESULT} | tr -d '\n' | pbcopy
+        print -s " ${RESULT}    # corrected command"
+        echo ${RESULT}
+    else
+        return $?
+    fi
+    export _FF_LAST=${RESULT}
+}
+
+# Dumb searcher
+fd() { fzf -e -i -f "$*" }
+
+# fzf for history
+fh() { print -z $((fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//') }
+
+sf() {
+    # Sublime + fzf
+    # If ends with ':', that means I want to specify line number
+    local LINE_NUMBER=0
+    local IF_NO_COLON=$(echo "$@" | grep ':')
+    if [[ -n $IF_NO_COLON ]]; then
+        LINE_NUMBER=$(echo "$@" | cut -d':' -f2)
+    fi
+    local FF_ARGS=$(echo "$@" | cut -d':' -f1)
+
+    local FOUND_FILES=`fzfz $FF_ARGS`
+    if [[ -n $FOUND_FILES ]]; then
+        echo -e "\e[33m${FOUND_FILES}"
+        echo "${FOUND_FILES}:${LINE_NUMBER}" | xargs subl -n
+        print -s "subl -n ${FOUND_FILES}:${LINE_NUMBER}    # corrected command"
+    else
+        return 1
+    fi
+}
+
+ef() {
+    # Emacs + fzf
+    local LINE_NUMBER=""
+    if [[ ${1:0:1} == "+" ]]; then
+        LINE_NUMBER="$1"
+        shift
+    fi
+
+    local FOUND_FILES=`FZF_OPTS=" --height=10" fzfz $@`
+    if [[ -n ${FOUND_FILES} ]]; then
+        echo -e "\e[33m${FOUND_FILES}"
+        ec ${LINE_NUMBER} $(echo -n ${FOUND_FILES} | tr '\n' ' ')
+        print -s "ec ${LINE_NUMBER} ${FOUND_FILES}    # corrected command"
+    else
+        return 1
+    fi
+}
+
+# Search in files...fast
+xg() {
+    which ag &> /dev/null
+    if [ $? -eq 0 ]; then
+        ag "$@" . --ignore '*.plist' --ignore '*.xcscheme' --ignore '*.pbxproj' --ignore '*.d' --ignore '*.LinkFileList' --ignore '*.pch.data' --ignore '*.pch.d' --ignore '*.git' --ignore '*.xib' -t
+    else
+        grep --color -rnI $@ . --exclude '*.plist' --exclude '*.xcscheme' --exclude '*.pbxproj' --exclude '*.d' --exclude '*.LinkFileList' --exclude '*.pch.data' --exclude '*.pch.d' --exclude-dir='.git' --exclude '*.xib'
+    fi
+}
+
+# Generate tags
+gen_etags() {
+    cd `git root`
+    rm -f TAGS tags
+    find . -type f \
+         -not -path '*\.Archive/*' \
+         -not -path '*BuildResults/*' \
+         -not -path '*Build/*' \
+         \( \
+         -name '*.[chSsm]' -o \
+         -name '*.[ch]pp' -o \
+         -name '*.mm' -o \
+         -name '*.asm' \
+         \) \
+        | xargs etags -a
+}
+
+gen_gtags() {
+    cd `git root`
+    rm -f GPATH GRTAGS GTAGS
+    gtags --skip-symlink --skip-unreadable
+}
+
+# Git - without pager
+gitn() { git --no-pager "$@" | head -n $((`tput lines`/2)) }
+
+# Git - copy to clipboard
+gitc() { git "$@" --no-color | tee >(pbcopy) }
+
+# Misc
+alias py='python3 '
+alias l='ls -lta '
+alias lag="ag --pager='less -R' "
+ash () { autossh -M 0 "$@" }
+mkcd () { mkdir $1 && builtin cd $1 }
+c () { ls "${1:-.}" && builtin cd "$1" }
+alias cls="clear; printf '\e[3J'; clear"
+alias term_info='echo "Columns:`tput cols` Rows:`tput lines`"'
+cdiff () {
+    COLS=$(tput cols)
+    colordiff -yW${COLS} "${1}" "${2}" | less
+}
+alias emacs='emacs -nw '
+alias history='fc -l 1'
+alias ag="ag -t "
+
+# Edit Commands
+alias edit_zshrc='ec $HOME/.shell/zshrc'
+alias edit_theme='ec $HOME/.shell/zdavid.zsh-theme'
+alias edit_functions='ec $HOME/.shell/functions'
+alias edit_emacs='rm -f $HOME/.emacs.d/init.elc && emacs -nw $HOME/.emacs.d/init.el && echo "-- Remember to restart emacs --"'
+alias edit_tmux='ec $HOME/.tmux.conf'
+alias edit_ssh_config='ec $HOME/.ssh/config'
+alias edit_bashrc='ec $HOME/.bashrc'
+alias edit_bash_profile='ec $HOME/.bash_profile'
+alias edit_gitconfig='ec $HOME/.gitconfig'
+
+# MacOS / Linux common functions
+if [[ `uname` == 'Darwin' ]]; then
+    alias tac='tail -r '
+    alias updatedb='/usr/libexec/locate.updatedb'
+    alias ldd=' otool -L '
+    watch() {
+        local SLEEP_TIME
+        if [[ $1 == "-n" ]]; then
+            shift
+            SLEEP_TIME=$1
+        else
+            SLEEP_TIME=${1:2}
+        fi
+        shift
+
+        while true; do
+            eval "$@"; sleep $SLEEP_TIME
+        done
+    }
+else
+    alias pbcopy=' xclip -selection clipboard '
+    alias pbpaste=' xclip -o '
+fi

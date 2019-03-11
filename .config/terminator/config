@@ -1,0 +1,91 @@
+[global_config]
+  borderless = True
+  enabled_plugins = ,
+  handle_size = 1
+  inactive_color_offset = 0.87
+  title_font = Monospace 12
+  title_hide_sizetext = True
+[keybindings]
+  broadcast_all = None
+  broadcast_group = None
+  broadcast_off = None
+  close_term = <Super>w
+  close_window = None
+  copy = <Super>c
+  cycle_next = None
+  cycle_prev = None
+  edit_window_title = None
+  full_screen = None
+  go_down = None
+  go_left = None
+  go_next = <Super>o
+  go_prev = None
+  go_right = None
+  go_up = None
+  group_all = None
+  group_tab = None
+  help = None
+  hide_window = None
+  insert_number = None
+  insert_padded = None
+  layout_launcher = None
+  move_tab_left = None
+  move_tab_right = None
+  new_tab = <Super>t
+  new_terminator = None
+  new_window = <Super>n
+  next_tab = <Primary><Super>o
+  paste = <Super>v
+  prev_tab = None
+  reset = None
+  reset_clear = None
+  resize_down = None
+  resize_left = None
+  resize_right = None
+  resize_up = None
+  rotate_ccw = None
+  rotate_cw = None
+  scaled_zoom = None
+  search = <Super>f
+  split_horiz = <Super>minus
+  split_vert = <Super>backslash
+  switch_to_tab_1 = <Super>1
+  switch_to_tab_10 = None
+  switch_to_tab_2 = <Super>2
+  switch_to_tab_3 = <Super>3
+  switch_to_tab_4 = <Super>4
+  switch_to_tab_5 = <Super>5
+  switch_to_tab_6 = <Super>6
+  switch_to_tab_7 = <Super>7
+  switch_to_tab_8 = <Super>8
+  switch_to_tab_9 = <Super>9
+  toggle_scrollbar = None
+  toggle_zoom = None
+  ungroup_all = None
+  ungroup_tab = None
+  zoom_in = None
+  zoom_normal = None
+  zoom_out = None
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#051519"
+    background_darkness = 0.96
+    background_image = None
+    background_type = transparent
+    font = Monospace 12
+    foreground_color = "#acbbbd"
+    palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+    scrollback_infinite = True
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_system_font = False

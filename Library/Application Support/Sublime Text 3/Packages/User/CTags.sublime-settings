@@ -1,0 +1,6 @@
+{
+    "command":"/usr/bin/ctags",
+    "autocomplete": true,
+    "tag_file" : "tags",
+    "extra_tag_files": ["TAGS", ".tags", ".TAGS", ".gemtags"]
+}

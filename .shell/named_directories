@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+# TODO: Automatic named directories for repos I care about
+setopt auto_cd
+hash -d x=~/Projects/xperiments
+hash -d b=~/bin
+
+function abspath() {
+    echo "$(cd "$(dirname ${1})" && pwd -P)/$(basename ${1})"
+}
+
+function add_shortcut() {
+    DIRECTORY=${1}
+    ABS_PATH=$(abspath ${DIRECTORY})
+    SHORTCUT_NAME=w$(echo ${DIRECTORY} | sed -e 's/ /_/g' | tr '[:upper:]' '[:lower:]')
+    echo "hash -d ${SHORTCUT_NAME}=\"${ABS_PATH}\"" >> $HOME/.shell/named_directories_shortcuts_cache
+    echo "Made the shortcut '~${SHORTCUT_NAME}' -> '${ABS_PATH}'"
+    exec zsh   # re-source!
+}
+
+source $HOME/.shell/named_directories_shortcuts_cache

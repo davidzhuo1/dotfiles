@@ -1,0 +1,30 @@
+{
+    "usageCount": 52, 
+    "omitTrigger": false, 
+    "prompt": false, 
+    "description": "cmd-w_close-tab", 
+    "abbreviation": {
+        "wordChars": "[\\w]", 
+        "abbreviations": [], 
+        "immediate": false, 
+        "ignoreCase": false, 
+        "backspace": true, 
+        "triggerInside": false
+    }, 
+    "hotkey": {
+        "hotKey": "w", 
+        "modifiers": [
+            "<super>"
+        ]
+    }, 
+    "modes": [
+        3
+    ], 
+    "showInTrayMenu": false, 
+    "filter": {
+        "regex": ".*Chrome|.*Chromium|.*Firefox", 
+        "isRecursive": false
+    }, 
+    "type": "script", 
+    "store": {}
+}

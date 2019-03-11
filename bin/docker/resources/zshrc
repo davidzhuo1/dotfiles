@@ -1,0 +1,65 @@
+#/bin/zsh
+
+# Super simple .zshrc
+
+# Allow dumb terms to work (emacs tramp)
+if [[ "$TERM" == "dumb" ]]; then
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    unfunction precmd
+    unfunction preexec
+    PS1='$ '
+    return
+fi
+
+# Idiot-proofing
+alias sudo=' '
+alias sl='ls '
+alias gti='git '
+alias oepnx='openx '
+alias oepn='open '
+alias grpe='grep '
+
+# Shortcuts
+alias l='ls -lat '
+
+# Colors
+alias ls='ls --color=auto '
+alias grep='grep --color '
+export PS1=$'\n''> '
+
+# Better manpages
+export LESS=RinS
+export MAN_COMMAND=`which man`
+man() {
+    env \
+    LESS_TERMCAP_mb="$(printf "\e[1;31m")" \
+    LESS_TERMCAP_md="$(printf "\e[1;31m")" \
+    LESS_TERMCAP_me="$(printf "\e[0m")" \
+    LESS_TERMCAP_se="$(printf "\e[0m")" \
+    LESS_TERMCAP_so="$(printf "\e[1;44;33m")" \
+    LESS_TERMCAP_ue="$(printf "\e[0m")" \
+    LESS_TERMCAP_us="$(printf "\e[1;32m")" \
+    ${MAN_COMMAND} "${@}" 2> >(sed -e "/.*man: can't set the locale.*/d")
+}
+export PAGER=less
+
+# Editor stuff
+alias em=mg
+export EDITOR='mg'
+export VISUAL='mg'
+
+# Zsh keybindings - Don't insert garbage to terminal!
+bindkey "^[[1;2C" forward-word
+bindkey "^[[1;2D" backward-word
+bindkey "^[[1;4C" forward-word
+bindkey "^[[1;4D" backward-word
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;6C" forward-word
+bindkey "^[[1;6D" backward-word
+bindkey "^[[1;9C" forward-word
+bindkey "^[[1;9D" backward-word
+bindkey "^[[1;10C" forward-word
+bindkey "^[[1;10D" backward-word
